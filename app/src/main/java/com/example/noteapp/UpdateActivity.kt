@@ -19,6 +19,7 @@ import com.example.noteapp.db.Tasks
 import com.example.noteapp.db.TasksDatabase
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 
 class UpdateActivity :AppCompatActivity(){
     private lateinit var  viewModel:TaskViewModel
@@ -27,12 +28,13 @@ class UpdateActivity :AppCompatActivity(){
     private var taskid=0
     private var taskname=""
     private var taskstatus=false
-
+    private lateinit var adapter:TasksRecyclerViewAdapter
 
 
    override fun onCreate(savedInstanceState: Bundle?){
        super.onCreate(savedInstanceState)
        setContentView(R.layout.updateactivity)
+
        binding=DataBindingUtil.setContentView(this,R.layout.updateactivity)
 
        updatetxtfield=findViewById(R.id.updatetv)
@@ -52,6 +54,8 @@ class UpdateActivity :AppCompatActivity(){
        val factory=TaskViewModelFactory(doa)
 
        viewModel= ViewModelProvider(this,factory).get(TaskViewModel::class.java)
+
+
 
 
        updatebtn.setOnClickListener{
@@ -108,10 +112,10 @@ class UpdateActivity :AppCompatActivity(){
                    taskstatus
                )
            )
-           Toast.makeText(this,"Task deleted",Toast.LENGTH_SHORT).show()
-           val intent=Intent(this,MainActivity::class.java)
-           startActivity(intent)
-           finish()
+      Toast.makeText(this,"Task deleted",Toast.LENGTH_SHORT).show()
+      val intent=Intent(this,MainActivity::class.java)
+      startActivity(intent)
+      finish()
     }
 
 

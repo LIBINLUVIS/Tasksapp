@@ -6,10 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.ActionBar
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -29,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var taskRecyclerView: RecyclerView
     private lateinit var adapter: TasksRecyclerViewAdapter
     private lateinit var actionbar:ActionBar
+    private lateinit var restimg:ImageView
+    private lateinit var nowork:TextView
     private lateinit var colorDrawable: ColorDrawable
 
 
@@ -39,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         taskview=findViewById(R.id.tasktv1)
         addbutton=findViewById(R.id.addbtn)
         taskRecyclerView = findViewById(R.id.rvtasks)
+        restimg=findViewById(R.id.restimg)
+        nowork=findViewById(R.id.nowork)
 
         colorDrawable= ColorDrawable(Color.parseColor("#2196F3"))
 
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+
         initRecyclerView()
     }
 
@@ -76,6 +78,7 @@ class MainActivity : AppCompatActivity() {
         taskRecyclerView.adapter = adapter
 
         displayTasksList()
+
     }
 
     private fun displayTasksList(){
@@ -83,6 +86,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.tasks.observe(this,{
            adapter.setList(it)
             adapter.notifyDataSetChanged()
+            val length= viewModel.tasks.value?.size
+            if (length != null) {
+                if(length >=1){
+                    restimg.isVisible=false
+                    nowork.isVisible=false
+
+                }
+            }
+
         })
     }
 
@@ -97,6 +109,22 @@ class MainActivity : AppCompatActivity() {
                     selectedtasks.status
                 )
             )
+            viewModel.tasks.observe(this,{
+                adapter.setList(it)
+                adapter.notifyDataSetChanged()
+                val length= viewModel.tasks.value?.size
+                if (length != null) {
+                    if(length >=1){
+                        restimg.isVisible=false
+                        nowork.isVisible=false
+
+                    }else{
+                        restimg.isVisible=true
+                        nowork.isVisible=true
+                    }
+                }
+
+            })
             Toast.makeText(this,"Task Finished",Toast.LENGTH_SHORT).show()
         }else{
             val intent=Intent(this,UpdateActivity::class.java)
@@ -109,10 +137,9 @@ class MainActivity : AppCompatActivity() {
             finish()
 
         }
-
-
-
     }
+
+
     private fun addtask(){
         viewModel.insertTask(
             Tasks(

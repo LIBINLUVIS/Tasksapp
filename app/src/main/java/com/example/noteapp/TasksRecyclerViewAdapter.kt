@@ -21,8 +21,7 @@ class TasksRecyclerViewAdapter( private val clickListener:(Tasks)->Unit
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-
-       holder.bind(taskList[position],clickListener)
+        holder.bind(taskList[position],clickListener)
     }
 
     override fun getItemCount(): Int {
@@ -33,6 +32,8 @@ class TasksRecyclerViewAdapter( private val clickListener:(Tasks)->Unit
         taskList.clear()
         taskList.addAll(tasks)
     }
+
+
 
 
 
